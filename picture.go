@@ -51,15 +51,6 @@ func examinePic(path string) {
 	destpath := fmt.Sprintf("%s/%s-%s", destDir, stryear, strmonth)
 	prevDir = destpath
 
-	// create destination dir
-	_, err = os.Stat(destpath)
-	if err != nil {
-		err = os.MkdirAll(destpath, 0755)
-		if err != nil {
-			log.Fatalf("Failed to make destination dir: %s due to error: %v", destpath, err)
-		}
-	}
-
 	copyFile(f, newFilename, destpath)
 
 }

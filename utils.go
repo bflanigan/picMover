@@ -10,6 +10,15 @@ import (
 
 func copyFile(f *os.File, destFilename string, destPath string) {
 
+	// create destination dir
+	_, err := os.Stat(destPath)
+	if err != nil {
+		err = os.MkdirAll(destPath, 0755)
+		if err != nil {
+			log.Fatalf("Failed to make destination dir: %s due to error: %v", destPath, err)
+		}
+	}
+
 	f.Seek(0, 0)
 
 	df, err := os.Create(destPath + "/" + destFilename)
