@@ -4,6 +4,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -20,6 +21,13 @@ func copyFile(f *os.File, destFilename string, destPath string) {
 	}
 
 	f.Seek(0, 0)
+
+	// check for destination file already present, if so, rename the one we are trying to copy
+	_, err = os.Stat(destPath + "/" + destFilename)
+	if err == nil {
+		epoch := strconv.FormatInt(time.Now().UnixNano(), 10)
+		destFilename = epoch + "-" + destFilename
+	}
 
 	df, err := os.Create(destPath + "/" + destFilename)
 	if err != nil {

@@ -21,8 +21,8 @@ func main() {
 	flag.StringVar(&destDir, "destDir", "", "Put renamed files here")
 	flag.StringVar(&movieDir, "movieDir", "", "Where to dump movies")
 	flag.StringVar(&unknownDir, "unknownDir", "", "Where to put files with unknown metadata")
-	flag.StringVar(&pics, "picExts", "jpg,gif,png,aae", "Comma delimited list of picture extensions")
-	flag.StringVar(&movs, "movExts", "mov,mp4,avi", "Comma delimited list of picture extensions")
+	flag.StringVar(&pics, "picExts", "jpg,gif,png,aae,tif", "Comma delimited list of picture extensions")
+	flag.StringVar(&movs, "movExts", "mov,mp4,avi,mod,m4a,m4v", "Comma delimited list of picture extensions")
 	flag.Parse()
 
 	if len(startDir) == 0 || len(destDir) == 0 {
