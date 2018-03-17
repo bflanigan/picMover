@@ -12,7 +12,28 @@ import (
 	"github.com/rwcarlsen/goexif/exif"
 )
 
+type pictureMetadata struct {
+	make         string
+	model        string
+	year         string
+	month        string
+	day          string
+	hour         string
+	minute       string
+	second       string
+	origFilename string
+	newFilename  string
+}
+
 func examinePic(path string) {
+
+	p := pictureMetadata{
+		origFilename: filepath.Base(path),
+		make:         "unknown",
+		model:        "unknown",
+	}
+
+	camera := fmt.Sprintf("%s-%s", p.make, p.model)
 
 	f, err := os.Open(path)
 	if err != nil {
@@ -22,36 +43,53 @@ func examinePic(path string) {
 
 	x, err := exif.Decode(f)
 	if err != nil {
+		log.Printf("Failed to decode exif on file: %s", path)
 		if len(unknownDir) == 0 {
-			copyFile(f, filepath.Base(path), prevDir)
+			copyFile(f, p.origFilename, prevDir+"/"+camera)
 		} else {
-			copyFile(f, filepath.Base(path), unknownDir)
+			copyFile(f, p.origFilename, unknownDir+"/"+camera)
 		}
 		return
 	}
 
+	Make, err := x.Get("Make")
+	if err != nil {
+		log.Printf("Failed to extract make from metadata for file: %s", path)
+	} else {
+		p.make = strings.Replace(Make.String(), `"`, "", -1)
+	}
+
+	Model, err := x.Get("Model")
+	if err != nil {
+		log.Printf("Failed to extract model from metadata for file: %s", path)
+	} else {
+		p.model = strings.Replace(Model.String(), `"`, "", -1)
+	}
+
+	camera = fmt.Sprintf("%s-%s", p.make, p.model)
+
 	dateTaken, err := x.DateTime()
 	if err != nil {
+		log.Printf("Failed to extract time/date from metadata on file: %s", path)
 		if len(unknownDir) == 0 {
-			copyFile(f, filepath.Base(path), prevDir)
+			copyFile(f, p.origFilename, prevDir+"/"+camera)
 		} else {
-			copyFile(f, filepath.Base(path), unknownDir)
+			copyFile(f, p.origFilename, unknownDir+"/"+camera)
 		}
 		return
 	}
 
 	//extract the timestamp from the jpg
-	stryear, strmonth, strday, strhour, strmin, strsec := exifDecode(dateTaken)
+	p.year, p.month, p.day, p.hour, p.minute, p.second = exifDecode(dateTaken)
 
 	// remove whitespace in previous files and replace with _
-	origFilename := filepath.Base(path)
-	origFilename = strings.Replace(origFilename, " ", "_", -1)
-	newFilename := fmt.Sprintf("%s%s%s_%s%s%s_%s", stryear, strmonth, strday, strhour, strmin, strsec, origFilename)
+	s := strings.Replace(p.origFilename, " ", "_", -1)
+	newFilename := fmt.Sprintf("%s%s%s_%s%s%s_%s", p.year, p.month, p.day, p.hour, p.minute, p.second, s)
 
-	destpath := fmt.Sprintf("%s/%s-%s", destDir, stryear, strmonth)
+	destpath := fmt.Sprintf("%s/%s-%s", destDir, p.year, p.month)
 	prevDir = destpath
 
-	copyFile(f, newFilename, destpath)
+	copyFile(f, newFilename, destpath+"/"+camera)
 
 }
 

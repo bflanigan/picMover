@@ -1,0 +1,337 @@
+2018/03/16 20:38:10 Copied 1710174 bytes /data/UniquePics-20170514/data/organizeme/c/Seagate/750GB/Bullshit/Saved Data from Reinstalls/sdc2/sda2/Honeymoon Pics/Istanbul/VID00001.AVI to /media/camera/test5/movies/-/unknown/__VID00001.AVI
+
+bflani000@NAS:~$ mediainfo "/data/UniquePics-20170514/data/organizeme/c/Seagate/750GB/Bullshit/Saved Data from Reinstalls/sdc2/sda2/Honeymoon Pics/Istanbul/VID00001.AVI"
+General
+Complete name                            : /data/UniquePics-20170514/data/organizeme/c/Seagate/750GB/Bullshit/Saved Data from Reinstalls/sdc2/sda2/Honeymoon Pics/Istanbul/VID00001.AVI
+Format                                   : AVI
+Format/Info                              : Audio Video Interleave
+File size                                : 1.63 MiB
+Duration                                 : 11 s 580 ms
+Overall bit rate                         : 1 181 kb/s
+
+Video
+ID                                       : 0
+Format                                   : MPEG-4 Visual
+Format profile                           : Advanced Simple@L5
+Format settings                          : BVOP2
+Format settings, BVOP                    : 2
+Format settings, QPel                    : No
+Format settings, GMC                     : No warppoints
+Format settings, Matrix                  : Default (MPEG)
+Codec ID                                 : XVID
+Codec ID/Hint                            : XviD
+Duration                                 : 11 s 533 ms
+Bit rate                                 : 1 114 kb/s
+Width                                    : 448 pixels
+Height                                   : 336 pixels
+Display aspect ratio                     : 4:3
+Frame rate                               : 30.000 FPS
+Color space                              : YUV
+Chroma subsampling                       : 4:2:0
+Bit depth                                : 8 bits
+Scan type                                : Progressive
+Compression mode                         : Lossy
+Bits/(Pixel*Frame)                       : 0.247
+Stream size                              : 1.53 MiB (94%)
+Writing library                          : Zoran
+
+Audio
+ID                                       : 1
+Format                                   : ADPCM
+Codec ID                                 : 2
+Duration                                 : 11 s 580 ms
+Bit rate mode                            : Constant
+Bit rate                                 : 64.0 kb/s
+Channel(s)                               : 1 channel
+Sampling rate                            : 16.0 kHz
+Bit depth                                : 4 bits
+Stream size                              : 91.0 KiB (5%)
+Interleave, duration                     : 127  ms (3.80 video frames)
+
+
+bflani000@NAS:~$
+
+2018/03/16 20:38:10 Copied 18206166 bytes /data/UniquePics-20170514/data/organizeme/c/Seagate/750GB/Bullshit/Saved Data from Reinstalls/sdc2/sda2/Honeymoon Pics/Istanbul/MVI_0395.avi to /media/camera/test5/movies/2007-/CanonMVI06/200715_114601_MVI_0395.avi
+
+bflani000@NAS:~$ mediainfo "/data/UniquePics-20170514/data/organizeme/c/Seagate/750GB/Bullshit/Saved Data from Reinstalls/sdc2/sda2/Honeymoon Pics/Istanbul/MVI_0395.avi"
+General
+Complete name                            : /data/UniquePics-20170514/data/organizeme/c/Seagate/750GB/Bullshit/Saved Data from Reinstalls/sdc2/sda2/Honeymoon Pics/Istanbul/MVI_0395.avi
+Format                                   : AVI
+Format/Info                              : Audio Video Interleave
+File size                                : 17.4 MiB
+Duration                                 : 9 s 367 ms
+Overall bit rate                         : 15.5 Mb/s
+Mastered date                            : SAT SEP 15 11:46:01 2007
+Writing application                      : CanonMVI06
+
+Video
+ID                                       : 0
+Format                                   : JPEG
+Codec ID                                 : MJPG
+Duration                                 : 9 s 367 ms
+Bit rate                                 : 14.8 Mb/s
+Width                                    : 640 pixels
+Height                                   : 480 pixels
+Display aspect ratio                     : 4:3
+Frame rate                               : 30.000 FPS
+Color space                              : YUV
+Chroma subsampling                       : 4:2:2
+Bit depth                                : 8 bits
+Scan type                                : Progressive
+Compression mode                         : Lossy
+Bits/(Pixel*Frame)                       : 1.610
+Stream size                              : 16.6 MiB (95%)
+
+Audio
+ID                                       : 1
+Format                                   : PCM
+Format settings                          : Little / Signed
+Codec ID                                 : 1
+Duration                                 : 9 s 367 ms
+Bit rate mode                            : Constant
+Bit rate                                 : 705.6 kb/s
+Channel(s)                               : 1 channel
+Sampling rate                            : 44.1 kHz
+Bit depth                                : 16 bits
+Stream size                              : 807 KiB (5%)
+Alignment                                : Aligned on interleaves
+Interleave, duration                     : 937  ms (28.10 video frames)
+Interleave, preload duration             : 1000  ms
+
+
+2018/03/16 20:36:07 Copied 7307452 bytes /data/UniquePics-20170514/data/organizeme/c/Seagate/750GB/Bullshit/Saved Data from Reinstalls/reinstall102905/My Documents/My Pictures/2005-10-10/10-10-05 115.avi to /media/camera/test5/movies/2005-/CanonMVI02/200508_215445_10-10-05_115.avi
+
+bflani000@NAS:~$ mediainfo "/data/UniquePics-20170514/data/organizeme/c/Seagate/750GB/Bullshit/Saved Data from Reinstalls/reinstall102905/My Documents/My Pictures/2005-10-10/10-10-05 115.avi"
+General
+Complete name                            : /data/UniquePics-20170514/data/organizeme/c/Seagate/750GB/Bullshit/Saved Data from Reinstalls/reinstall102905/My Documents/My Pictures/2005-10-10/10-10-05 115.avi
+Format                                   : AVI
+Format/Info                              : Audio Video Interleave
+File size                                : 6.97 MiB
+Duration                                 : 3 s 933 ms
+Overall bit rate                         : 14.9 Mb/s
+Mastered date                            : SAT OCT 08 21:54:45 2005
+Writing application                      : CanonMVI02
+
+Video
+ID                                       : 0
+Format                                   : JPEG
+Codec ID                                 : MJPG
+Duration                                 : 3 s 933 ms
+Bit rate                                 : 14.8 Mb/s
+Width                                    : 640 pixels
+Height                                   : 480 pixels
+Display aspect ratio                     : 4:3
+Frame rate                               : 30.000 FPS
+Color space                              : YUV
+Chroma subsampling                       : 4:2:2
+Bit depth                                : 8 bits
+Scan type                                : Progressive
+Compression mode                         : Lossy
+Bits/(Pixel*Frame)                       : 1.602
+Stream size                              : 6.92 MiB (99%)
+
+Audio
+ID                                       : 1
+Format                                   : PCM
+Format settings                          : Unsigned
+Codec ID                                 : 1
+Duration                                 : 3 s 933 ms
+Bit rate mode                            : Constant
+Bit rate                                 : 88.2 kb/s
+Channel(s)                               : 1 channel
+Sampling rate                            : 11.024 kHz
+Bit depth                                : 8 bits
+Stream size                              : 42.3 KiB (1%)
+Alignment                                : Aligned on interleaves
+Interleave, duration                     : 983  ms (29.50 video frames)
+Interleave, preload duration             : 1000  ms
+
+
+bflani000@NAS:~$
+
+2018/03/16 20:38:11 Copied 4168948 bytes /data/UniquePics-20170514/data/organizeme/c/Seagate/750GB/Bullshit/Saved Data from Reinstalls/sdc2/sda2/Honeymoon Pics/Istanbul/VID00011.AVI to /media/camera/test5/movies/-/unknown/__VID00011.AVI
+
+bflani000@NAS:~$ mediainfo "/data/UniquePics-20170514/data/organizeme/c/Seagate/750GB/Bullshit/Saved Data from Reinstalls/sdc2/sda2/Honeymoon Pics/Istanbul/VID00011.AVI"
+General
+Complete name                            : /data/UniquePics-20170514/data/organizeme/c/Seagate/750GB/Bullshit/Saved Data from Reinstalls/sdc2/sda2/Honeymoon Pics/Istanbul/VID00011.AVI
+Format                                   : AVI
+Format/Info                              : Audio Video Interleave
+File size                                : 3.98 MiB
+Duration                                 : 39 s 448 ms
+Overall bit rate                         : 845 kb/s
+
+Video
+ID                                       : 0
+Format                                   : MPEG-4 Visual
+Format profile                           : Advanced Simple@L5
+Format settings                          : BVOP2
+Format settings, BVOP                    : 2
+Format settings, QPel                    : No
+Format settings, GMC                     : No warppoints
+Format settings, Matrix                  : Default (MPEG)
+Codec ID                                 : XVID
+Codec ID/Hint                            : XviD
+Duration                                 : 39 s 400 ms
+Bit rate                                 : 775 kb/s
+Width                                    : 448 pixels
+Height                                   : 336 pixels
+Display aspect ratio                     : 4:3
+Frame rate                               : 30.000 FPS
+Color space                              : YUV
+Chroma subsampling                       : 4:2:0
+Bit depth                                : 8 bits
+Scan type                                : Progressive
+Compression mode                         : Lossy
+Bits/(Pixel*Frame)                       : 0.172
+Stream size                              : 3.64 MiB (92%)
+Writing library                          : Zoran
+
+Audio
+ID                                       : 1
+Format                                   : ADPCM
+Codec ID                                 : 2
+Duration                                 : 39 s 448 ms
+Bit rate mode                            : Constant
+Bit rate                                 : 64.0 kb/s
+Channel(s)                               : 1 channel
+Sampling rate                            : 16.0 kHz
+Bit depth                                : 4 bits
+Stream size                              : 310 KiB (8%)
+Interleave, duration                     : 127  ms (3.81 video frames)
+
+
+2018/03/16 20:30:43 Copied 17076059 bytes /data/UniquePics-20170514/data/organizeme/c/Pictures/iphone 20141103/IMG_0516.MOV to /media/camera/test5/movies/-/unknown/__IMG_0516.MOV
+
+bflani000@NAS:~$ mediainfo "/data/UniquePics-20170514/data/organizeme/c/Pictures/iphone 20141103/IMG_0516.MOV"
+General
+Complete name                            : /data/UniquePics-20170514/data/organizeme/c/Pictures/iphone 20141103/IMG_0516.MOV
+File size                                : 16.3 MiB
+
+
+bflani000@NAS:~$
+
+
+2018/03/16 19:54:20 Copied 16447488 bytes /data/UniquePics-20170514/data/organizeme/c/Pictures/Parents Pictures from CDs/Wedding_1a/MOV07F.MOD to /media/camera/test5/movies/-/unknown/__MOV07F.MOD
+
+bflani000@NAS:~$ mediainfo "/data/UniquePics-20170514/data/organizeme/c/Pictures/Parents Pictures from CDs/Wedding_1a/MOV07F.MOD"
+General
+Complete name                            : /data/UniquePics-20170514/data/organizeme/c/Pictures/Parents Pictures from CDs/Wedding_1a/MOV07F.MOD
+Format                                   : MPEG-PS
+File size                                : 15.7 MiB
+Duration                                 : 13 s 514 ms
+Overall bit rate mode                    : Variable
+Overall bit rate                         : 9 737 kb/s
+FileExtension_Invalid                    : mpeg mpg m2p vob pss evo
+
+Video
+ID                                       : 224 (0xE0)
+Format                                   : MPEG Video
+Format version                           : Version 2
+Format profile                           : Main@Main
+Format settings                          : BVOP
+Format settings, BVOP                    : Yes
+Format settings, Matrix                  : Default
+Format settings, GOP                     : M=3, N=15
+Format settings, picture structure       : Frame
+Duration                                 : 13 s 514 ms
+Bit rate mode                            : Variable
+Bit rate                                 : 9 200 kb/s
+Width                                    : 720 pixels
+Height                                   : 480 pixels
+Display aspect ratio                     : 4:3
+Frame rate                               : 29.970 (30000/1001) FPS
+Standard                                 : NTSC
+Color space                              : YUV
+Chroma subsampling                       : 4:2:0
+Bit depth                                : 8 bits
+Scan type                                : Interlaced
+Scan order                               : Top Field First
+Compression mode                         : Lossy
+Bits/(Pixel*Frame)                       : 0.888
+Time code of first frame                 : 00:00:00:00
+Time code source                         : Group of pictures header
+GOP, Open/Closed                         : Closed
+Stream size                              : 14.8 MiB (94%)
+Color primaries                          : BT.601 NTSC
+Transfer characteristics                 : BT.601
+Matrix coefficients                      : BT.601
+
+Audio
+ID                                       : 189 (0xBD)-128 (0x80)
+Format                                   : AC-3
+Format/Info                              : Audio Coding 3
+Muxing mode                              : DVD-Video
+Duration                                 : 13 s 344 ms
+Bit rate mode                            : Constant
+Bit rate                                 : 384 kb/s
+Channel(s)                               : 2 channels
+Channel positions                        : Front: L R
+Sampling rate                            : 48.0 kHz
+Frame rate                               : 31.250 FPS (1536 SPF)
+Bit depth                                : 16 bits
+Compression mode                         : Lossy
+Stream size                              : 626 KiB (4%)
+Service kind                             : Complete Main
+
+
+2018/03/16 19:21:29 Copied 2814940 bytes /data/UniquePics-20170514/data/Pictures/iPhone 2016.05.30/IMG_3347.mp4 to /media/camera/test5/movies/-/Lavf56.4.101/__IMG_3347.mp4
+
+bflani000@NAS:~$ mediainfo "/data/UniquePics-20170514/data/Pictures/iPhone 2016.05.30/IMG_3347.mp4"
+General
+Complete name                            : /data/UniquePics-20170514/data/Pictures/iPhone 2016.05.30/IMG_3347.mp4
+Format                                   : MPEG-4
+Format profile                           : Base Media
+Codec ID                                 : isom (isom/iso2/avc1/mp41)
+File size                                : 2.68 MiB
+Duration                                 : 32 s 171 ms
+Overall bit rate mode                    : Variable
+Overall bit rate                         : 700 kb/s
+Writing application                      : Lavf56.4.101
+
+Video
+ID                                       : 1
+Format                                   : AVC
+Format/Info                              : Advanced Video Codec
+Format profile                           : Baseline@L3.1
+Format settings                          : 5 Ref Frames
+Format settings, CABAC                   : No
+Format settings, ReFrames                : 5 frames
+Codec ID                                 : avc1
+Codec ID/Info                            : Advanced Video Coding
+Duration                                 : 32 s 23 ms
+Bit rate                                 : 504 kb/s
+Width                                    : 368 pixels
+Height                                   : 656 pixels
+Display aspect ratio                     : 0.561
+Frame rate mode                          : Constant
+Frame rate                               : 29.970 (29970/1000) FPS
+Color space                              : YUV
+Chroma subsampling                       : 4:2:0
+Bit depth                                : 8 bits
+Scan type                                : Progressive
+Bits/(Pixel*Frame)                       : 0.070
+Stream size                              : 1.92 MiB (72%)
+Writing library                          : x264 core 142
+Encoding settings                        : cabac=0 / ref=5 / deblock=1:0:0 / analyse=0x1:0x111 / me=hex / subme=6 / psy=1 / psy_rd=1.00:0.00 / mixed_ref=1 / me_range=16 / chroma_me=1 / trellis=0 / 8x8dct=0 / cqm=0 / deadzone=21,11 / fast_pskip=1 / chroma_qp_offset=-2 / threads=36 / lookahead_threads=5 / sliced_threads=0 / nr=0 / decimate=1 / interlaced=0 / bluray_compat=0 / constrained_intra=0 / bframes=0 / weightp=0 / keyint=250 / keyint_min=30 / scenecut=40 / intra_refresh=0 / rc_lookahead=40 / rc=crf / mbtree=1 / crf=27.0 / qcomp=0.60 / qpmin=0 / qpmax=69 / qpstep=4 / vbv_maxrate=2000 / vbv_bufsize=4000 / crf_max=0.0 / nal_hrd=none / filler=0 / ip_ratio=1.40 / aq=1:1.00
+
+Audio
+ID                                       : 2
+Format                                   : AAC
+Format/Info                              : Advanced Audio Codec
+Format profile                           : LC
+Codec ID                                 : mp4a-40-2
+Duration                                 : 32 s 171 ms
+Bit rate mode                            : Variable
+Bit rate                                 : 188 kb/s
+Maximum bit rate                         : 2 000 kb/s
+Channel(s)                               : 2 channels
+Channel positions                        : Front: L R
+Sampling rate                            : 48.0 kHz
+Frame rate                               : 46.875 FPS (1024 SPF)
+Compression mode                         : Lossy
+Stream size                              : 739 KiB (27%)
+Default                                  : Yes
+Alternate group                          : 1
+
+
+bflani000@NAS:~$

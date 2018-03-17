@@ -9,8 +9,8 @@ import (
 )
 
 var (
-	destDir, prevDir, movieDir, unknownDir string
-	movieExts, picExts                     []string
+	destDir, prevDir, movieDir, unknownDir, mediainfo string
+	movieExts, picExts                                []string
 )
 
 func main() {
@@ -23,6 +23,8 @@ func main() {
 	flag.StringVar(&unknownDir, "unknownDir", "", "Where to put files with unknown metadata")
 	flag.StringVar(&pics, "picExts", "jpg,gif,png,aae,tif", "Comma delimited list of picture extensions")
 	flag.StringVar(&movs, "movExts", "mov,mp4,avi,mod,m4a,m4v", "Comma delimited list of picture extensions")
+	flag.StringVar(&mediainfo, "mediainfo", "/usr/bin/mediainfo", "Path to mediainfo binary")
+
 	flag.Parse()
 
 	if len(startDir) == 0 || len(destDir) == 0 {
