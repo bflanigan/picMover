@@ -103,6 +103,7 @@ func numMonthString(s string) string {
 		return "12"
 	}
 
+	log.Fatalf("Unable to determine number of month for string: %s", s)
 	return ""
 }
 

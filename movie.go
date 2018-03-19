@@ -28,6 +28,8 @@ func examineMov(path string) {
 	v := videoMetadata{
 		origFilename: filepath.Base(path),
 		camera:       "unknown",
+		year:         "unknown",
+		month:        "unknown",
 	}
 
 	var destinationDir string
@@ -45,7 +47,13 @@ func examineMov(path string) {
 
 	extractMovStamp(path, &v)
 	s := strings.Replace(v.origFilename, " ", "_", -1)
-	newFilename := fmt.Sprintf("%s%s%s_%s%s%s_%s", v.year, v.month, v.day, v.hour, v.minute, v.second, s)
+
+	var newFilename string
+	if v.year != "unknown" { // if we were able to get some sort of timestamp, then include it in the new filename
+		newFilename = fmt.Sprintf("%s%s%s_%s%s%s_%s", v.year, v.month, v.day, v.hour, v.minute, v.second, s)
+	} else { // if we could not get a timestamp, then just reuse the original filename
+		newFilename = s
+	}
 
 	destpath := fmt.Sprintf("%s/%s-%s", destinationDir, v.year, v.month)
 
@@ -54,6 +62,8 @@ func examineMov(path string) {
 }
 
 func extractMovStamp(path string, v *videoMetadata) {
+
+	log.Printf("Working on: %s", path)
 
 	cmd := exec.Command(mediainfo, path)
 	var stdoutbuf bytes.Buffer
@@ -82,7 +92,6 @@ func extractMovStamp(path string, v *videoMetadata) {
 
 	for s.Scan() {
 		// 		Encoded date                             : UTC 2016-10-30 11:51:25
-
 		if !gotDate && strings.HasPrefix(s.Text(), "Encoded date") {
 			fields := strings.Fields(s.Text())
 			ymd := fields[4]
@@ -97,18 +106,50 @@ func extractMovStamp(path string, v *videoMetadata) {
 			v.second = s2[2]
 			gotDate = true
 		}
+		//Mastered date                            : 2008/02/23/ 22:56
+		//Mastered date                            : 2009-08-14 23:25:21
 		//Mastered date                            : SAT MAY 01 13:08:24 2010
-
 		if !gotDate && strings.HasPrefix(s.Text(), "Mastered date") {
-			fields := strings.Fields(s.Text())
-			hms := fields[6]
-			v.year = fields[7]
-			v.month = numMonthString(fields[4])
-			v.day = fields[5]
-			s2 := strings.Split(hms, ":")
-			v.hour = s2[0]
-			v.minute = s2[1]
-			v.second = s2[2]
+			fields := strings.Split(s.Text(), ":")
+			stamp := strings.TrimPrefix(fields[1], " ")
+
+			if strings.Contains(stamp, "/") {
+				//2008/02/23/ 22:56
+				s1 := strings.Split(stamp, "/")
+				v.year = s1[0]
+				v.month = s1[1]
+				v.day = s1[2]
+				hm := strings.Fields(s.Text())
+				s2 := strings.Split(hm[4], ":")
+				v.hour = s2[0]
+				v.minute = s2[1]
+				v.second = "00"
+			}
+
+			if strings.Contains(stamp, "-") {
+				//2009-08-14 23:25:21
+				s1 := strings.Split(stamp, "-")
+				v.year = s1[0]
+				v.month = s1[1]
+				v.day = s1[2]
+				hm := strings.Fields(s.Text())
+				s2 := strings.Split(hm[4], ":")
+				v.hour = s2[0]
+				v.minute = s2[1]
+				v.second = s2[2]
+			} else {
+				//SAT MAY 01 13:08:24 2010
+				fields := strings.Fields(s.Text())
+				hms := fields[6]
+				v.year = fields[7]
+				v.month = numMonthString(fields[4])
+				v.day = fields[5]
+				s2 := strings.Split(hms, ":")
+				v.hour = s2[0]
+				v.minute = s2[1]
+				v.second = s2[2]
+			}
+
 			gotDate = true
 		}
 
