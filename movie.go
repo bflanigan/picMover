@@ -110,8 +110,11 @@ func extractMovStamp(path string, v *videoMetadata) {
 		//Mastered date                            : 2009-08-14 23:25:21
 		//Mastered date                            : SAT MAY 01 13:08:24 2010
 		if !gotDate && strings.HasPrefix(s.Text(), "Mastered date") {
+			//fmt.Printf("line: %s\n", s.Text())
 			fields := strings.Split(s.Text(), ":")
 			stamp := strings.TrimPrefix(fields[1], " ")
+
+			//fmt.Printf("stamp: %s\n", stamp)
 
 			if strings.Contains(stamp, "/") {
 				//2008/02/23/ 22:56
@@ -124,16 +127,16 @@ func extractMovStamp(path string, v *videoMetadata) {
 				v.hour = s2[0]
 				v.minute = s2[1]
 				v.second = "00"
-			}
-
-			if strings.Contains(stamp, "-") {
+			} else if strings.Contains(stamp, "-") {
 				//2009-08-14 23:25:21
+				//2010-03- 5 02:06:13
 				s1 := strings.Split(stamp, "-")
-				v.year = s1[0]
-				v.month = s1[1]
-				v.day = s1[2]
+				v.year = strings.TrimSpace(s1[0])
+				v.month = strings.TrimSpace(s1[1])
+				v.day = strings.TrimSpace(s1[2])
 				hm := strings.Fields(s.Text())
-				s2 := strings.Split(hm[4], ":")
+				// hm[len(hm)-1] gets us the last field in the []string
+				s2 := strings.Split(hm[len(hm)-1], ":")
 				v.hour = s2[0]
 				v.minute = s2[1]
 				v.second = s2[2]
@@ -180,5 +183,17 @@ func extractMovStamp(path string, v *videoMetadata) {
 	if err := s.Err(); err != nil {
 		log.Fatalf("Scanner encountered error parsing mediainfo output: %v", err)
 	}
+
+	// extract only the first field of the day value
+	if len(v.day) > 0 {
+		fields := strings.Fields(v.day)
+		v.day = fields[0]
+
+		if len(v.day) == 1 {
+			v.day = "0" + v.day
+		}
+	}
+
+	//log.Printf("Value of v: %+v", v)
 
 }
