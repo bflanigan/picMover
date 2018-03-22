@@ -33,7 +33,7 @@ func examinePic(path string) {
 		model:        "unknown",
 	}
 
-	camera := fmt.Sprintf("%s-%s", p.make, p.model)
+	unknown := "unknown-pic"
 
 	f, err := os.Open(path)
 	if err != nil {
@@ -43,38 +43,49 @@ func examinePic(path string) {
 
 	x, err := exif.Decode(f)
 	if err != nil {
-		log.Printf("Failed to decode exif on file: %s", path)
-		if len(unknownDir) == 0 {
-			copyFile(f, p.origFilename, prevDir+"/"+camera)
+		if debug {
+			log.Printf("Failed to decode exif on file: %s", path)
+		}
+
+		// if we have not set a directory into which to copy files of unknown metadata,
+		// just copy it into the last known good directory
+		if len(unknownDir) > 0 {
+			copyFile(f, p.origFilename, unknownDir+"/"+unknown)
 		} else {
-			copyFile(f, p.origFilename, unknownDir+"/"+camera)
+			copyFile(f, p.origFilename, prevDir+"/"+unknown)
 		}
 		return
 	}
 
 	Make, err := x.Get("Make")
 	if err != nil {
-		log.Printf("Failed to extract make from metadata for file: %s", path)
+		if debug {
+			log.Printf("Failed to extract make from metadata for file: %s", path)
+		}
 	} else {
 		p.make = strings.Replace(Make.String(), `"`, "", -1)
 	}
 
 	Model, err := x.Get("Model")
 	if err != nil {
-		log.Printf("Failed to extract model from metadata for file: %s", path)
+		if debug {
+			log.Printf("Failed to extract model from metadata for file: %s", path)
+		}
 	} else {
 		p.model = strings.Replace(Model.String(), `"`, "", -1)
 	}
 
-	camera = fmt.Sprintf("%s-%s", p.make, p.model)
+	camera := fmt.Sprintf("%s-%s", p.make, p.model)
 
 	dateTaken, err := x.DateTime()
 	if err != nil {
-		log.Printf("Failed to extract time/date from metadata on file: %s", path)
-		if len(unknownDir) == 0 {
-			copyFile(f, p.origFilename, prevDir+"/"+camera)
-		} else {
+		if debug {
+			log.Printf("Failed to extract time/date from metadata on file: %s", path)
+		}
+		if len(unknownDir) > 0 {
 			copyFile(f, p.origFilename, unknownDir+"/"+camera)
+		} else {
+			copyFile(f, p.origFilename, prevDir+"/"+camera)
 		}
 		return
 	}
@@ -87,9 +98,15 @@ func examinePic(path string) {
 	newFilename := fmt.Sprintf("%s%s%s_%s%s%s_%s", p.year, p.month, p.day, p.hour, p.minute, p.second, s)
 
 	destpath := fmt.Sprintf("%s/%s-%s", destDir, p.year, p.month)
+	// we got the metadata from this picture file, set the global variable prevDir
+	// so the next file we come across we can put into this same directory
 	prevDir = destpath
 
-	copyFile(f, newFilename, destpath+"/"+camera)
+	if noRename {
+		copyFile(f, p.origFilename, destpath+"/"+camera)
+	} else {
+		copyFile(f, newFilename, destpath+"/"+camera)
+	}
 
 }
 

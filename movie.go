@@ -27,16 +27,13 @@ func examineMov(path string) {
 
 	v := videoMetadata{
 		origFilename: filepath.Base(path),
-		camera:       "unknown",
-		year:         "unknown",
-		month:        "unknown",
-	}
-
-	var destinationDir string
-	if len(movieDir) == 0 {
-		destinationDir = prevDir
-	} else {
-		destinationDir = movieDir
+		camera:       "unknown-mov",
+		year:         "0000",
+		month:        "00",
+		day:          "00",
+		hour:         "00",
+		minute:       "00",
+		second:       "00",
 	}
 
 	f, err := os.Open(path)
@@ -48,22 +45,32 @@ func examineMov(path string) {
 	extractMovStamp(path, &v)
 	s := strings.Replace(v.origFilename, " ", "_", -1)
 
-	var newFilename string
-	if v.year != "unknown" { // if we were able to get some sort of timestamp, then include it in the new filename
-		newFilename = fmt.Sprintf("%s%s%s_%s%s%s_%s", v.year, v.month, v.day, v.hour, v.minute, v.second, s)
-	} else { // if we could not get a timestamp, then just reuse the original filename
+	var newFilename, destpath string
+	if v.year == "0000" {
+		if len(unknownDir) == 0 {
+			destpath = fmt.Sprintf("%s/movies/%s", prevDir, v.camera)
+		} else {
+			destpath = fmt.Sprintf("%s/movies/%s", unknownDir, v.camera)
+		}
 		newFilename = s
+	} else {
+		destpath = fmt.Sprintf("%s/%s-%s/movies/%s", destDir, v.year, v.month, v.camera)
+		newFilename = fmt.Sprintf("%s%s%s_%s%s%s_%s", v.year, v.month, v.day, v.hour, v.minute, v.second, s)
 	}
 
-	destpath := fmt.Sprintf("%s/%s-%s", destinationDir, v.year, v.month)
-
-	copyFile(f, newFilename, destpath+"/"+v.camera)
+	if noRename {
+		copyFile(f, v.origFilename, destpath)
+	} else {
+		copyFile(f, newFilename, destpath)
+	}
 
 }
 
 func extractMovStamp(path string, v *videoMetadata) {
 
-	log.Printf("Working on: %s", path)
+	if debug {
+		log.Printf("Working on: %s", path)
+	}
 
 	cmd := exec.Command(mediainfo, path)
 	var stdoutbuf bytes.Buffer
@@ -110,11 +117,8 @@ func extractMovStamp(path string, v *videoMetadata) {
 		//Mastered date                            : 2009-08-14 23:25:21
 		//Mastered date                            : SAT MAY 01 13:08:24 2010
 		if !gotDate && strings.HasPrefix(s.Text(), "Mastered date") {
-			//fmt.Printf("line: %s\n", s.Text())
 			fields := strings.Split(s.Text(), ":")
 			stamp := strings.TrimPrefix(fields[1], " ")
-
-			//fmt.Printf("stamp: %s\n", stamp)
 
 			if strings.Contains(stamp, "/") {
 				//2008/02/23/ 22:56
@@ -177,6 +181,11 @@ func extractMovStamp(path string, v *videoMetadata) {
 			fields := strings.Split(s.Text(), ":")
 			v.camera = fields[1]
 			v.camera = strings.TrimPrefix(v.camera, " ")
+			// shove Apple in front of the i Devices to match what we're extracting on the pictures
+			// all other vendors are out of luck
+			if strings.HasPrefix(v.camera, "iP") {
+				v.camera = "Apple-" + v.camera
+			}
 		}
 	}
 
@@ -193,7 +202,5 @@ func extractMovStamp(path string, v *videoMetadata) {
 			v.day = "0" + v.day
 		}
 	}
-
-	//log.Printf("Value of v: %+v", v)
 
 }

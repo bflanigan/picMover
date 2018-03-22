@@ -27,7 +27,9 @@ func copyFile(f *os.File, destFilename string, destPath string) {
 	if err == nil {
 		epoch := strconv.FormatInt(time.Now().UnixNano(), 10)
 		destFilename = epoch + "-" + destFilename
-		log.Printf("Detected filename conflict - renaming destination file: %s", destPath+"/"+destFilename)
+		if debug {
+			log.Printf("Detected filename conflict - renaming destination file: %s", destPath+"/"+destFilename)
+		}
 	}
 
 	df, err := os.Create(destPath + "/" + destFilename)
@@ -41,7 +43,11 @@ func copyFile(f *os.File, destFilename string, destPath string) {
 		log.Fatalf("Failed to copy from %s to destination file %s due to error: %v", f.Name(), df.Name(), err)
 	}
 
-	log.Printf("Copied %d bytes %s to %s", written, f.Name(), df.Name())
+	if debug {
+		log.Printf("Copied %d bytes %s to %s", written, f.Name(), df.Name())
+	}
+
+	byteCount += written
 }
 
 func numMonth(month time.Month) string {
