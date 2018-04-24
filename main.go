@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -10,12 +11,23 @@ import (
 )
 
 var (
-	//destDir, prevDir, movieDir, unknownDir, mediainfo string
-	destDir, prevDir, unknownDir, mediainfo string
-	movieExts, picExts                      []string
-	debug, noRename                         bool
-	byteCount                               int64
+	destDir, prevDir, unknownDir, mediainfo, renameSuffix string
+	movieExts, picExts                                    []string
+	debug, noRenameDest, renameSource                     bool
+	byteCount                                             int64
 )
+
+// object refers to the file we are examining in walkFunc
+type object struct {
+	FullSourcePath string
+	SourceName     string
+	SourcePath     string
+	SourceSize     int64
+	FullDestPath   string
+	DestName       string
+	DestPath       string
+	FH             *os.File
+}
 
 func main() {
 
@@ -23,13 +35,14 @@ func main() {
 
 	flag.StringVar(&startDir, "startDir", "", "Start traversing from here")
 	flag.StringVar(&destDir, "destDir", "", "Put renamed files here")
-	//flag.StringVar(&movieDir, "movieDir", "", "Where to dump movies")
 	flag.StringVar(&unknownDir, "unknownDir", "", "Where to put files with unknown metadata")
 	flag.StringVar(&pics, "picExts", "jpg,gif,png,aae,tif,thm", "Comma delimited list of picture extensions")
-	flag.StringVar(&movs, "movExts", "mov,mp4,avi,mod,m4a,m4v,lrv", "Comma delimited list of picture extensions")
+	flag.StringVar(&movs, "movExts", "mov,mp4,avi,mod,m4a,m4v,lrv", "Comma delimited list of movie extensions")
 	flag.StringVar(&mediainfo, "mediainfo", "/usr/bin/mediainfo", "Path to mediainfo binary")
 	flag.BoolVar(&debug, "debug", false, "Set for more logging")
-	flag.BoolVar(&noRename, "noRename", false, "Do not rename files - keep existing filename")
+	flag.BoolVar(&noRenameDest, "noRenameDest", false, "Do not rename files on destination - keep existing source filename")
+	flag.BoolVar(&renameSource, "renameSource", false, "Rename source file after successful copy")
+
 	flag.Parse()
 
 	if len(startDir) == 0 || len(destDir) == 0 {
@@ -41,6 +54,12 @@ func main() {
 		log.Fatalf("Did not find mediainfo at: %s", mediainfo)
 	}
 
+	// if we want to rename source file after copying, define our suffix
+	if renameSource {
+		renameSuffix = fmt.Sprintf("-copied-%d", time.Now().Unix())
+	}
+
+	// set this to our destination dir initially - it will be modified the next time we can successfully extract the time/date from a file
 	prevDir = destDir
 
 	picExts = parseExtensions(pics)
@@ -53,11 +72,8 @@ func main() {
 		log.Fatalf("filepath.Walk returned error: %v.\n", err)
 	}
 
-	secs := time.Since(t1).Seconds()
-	throughput := float64(byteCount) / secs
-
-	log.Printf("Finished script. Copied %d in %v. %f bytes/sec", byteCount, time.Since(t1), throughput)
-
+	throughput := float64(byteCount) / time.Since(t1).Seconds()
+	log.Printf("Finished script. Copied %d bytes in %v. %.2f bytes/sec", byteCount, time.Since(t1), throughput)
 }
 
 func walkFunc(path string, info os.FileInfo, err error) error {
@@ -82,20 +98,27 @@ func walkFunc(path string, info os.FileInfo, err error) error {
 		return nil
 	}
 
-	fields := strings.Split(info.Name(), `.`)
+	o := &object{
+		SourceName:     filepath.Base(path),
+		SourcePath:     filepath.Dir(path),
+		SourceSize:     info.Size(),
+		FullSourcePath: path,
+	}
+
+	fields := strings.Split(o.SourceName, `.`)
 	extension := fields[len(fields)-1]
 	lowerExtension := strings.ToLower(extension)
 
 	for _, e := range picExts {
 		if lowerExtension == e {
-			examinePic(path)
+			examinePic(o)
 			return nil
 		}
 	}
 
 	for _, e := range movieExts {
 		if lowerExtension == e {
-			examineMov(path)
+			examineMov(o)
 			return nil
 		}
 	}

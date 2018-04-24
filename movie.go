@@ -7,7 +7,6 @@ import (
 	"log"
 	"os"
 	"os/exec"
-	"path/filepath"
 	"strings"
 )
 
@@ -23,10 +22,10 @@ type videoMetadata struct {
 	newFilename  string
 }
 
-func examineMov(path string) {
+func examineMov(o *object) {
 
 	v := videoMetadata{
-		origFilename: filepath.Base(path),
+		origFilename: o.SourceName,
 		camera:       "unknown-mov",
 		year:         "0000",
 		month:        "00",
@@ -36,13 +35,14 @@ func examineMov(path string) {
 		second:       "00",
 	}
 
-	f, err := os.Open(path)
+	var err error
+	o.FH, err = os.Open(o.FullSourcePath)
 	if err != nil {
-		log.Fatalf("Failed to open sourcefile: %s due to error: %v", path, err)
+		log.Fatalf("Failed to open sourcefile: %s due to error: %v", o.FullSourcePath, err)
 	}
-	defer f.Close()
+	defer o.FH.Close()
 
-	extractMovStamp(path, &v)
+	extractMovStamp(o.FullSourcePath, &v)
 	s := strings.Replace(v.origFilename, " ", "_", -1)
 
 	var newFilename, destpath string
@@ -58,10 +58,10 @@ func examineMov(path string) {
 		newFilename = fmt.Sprintf("%s%s%s_%s%s%s_%s", v.year, v.month, v.day, v.hour, v.minute, v.second, s)
 	}
 
-	if noRename {
-		copyFile(f, v.origFilename, destpath)
+	if noRenameDest {
+		copyFileNew(o, v.origFilename, destpath)
 	} else {
-		copyFile(f, newFilename, destpath)
+		copyFileNew(o, newFilename, destpath)
 	}
 
 }

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
@@ -25,34 +24,35 @@ type pictureMetadata struct {
 	newFilename  string
 }
 
-func examinePic(path string) {
+func examinePic(o *object) {
 
 	p := pictureMetadata{
-		origFilename: filepath.Base(path),
+		origFilename: o.SourceName,
 		make:         "unknown",
 		model:        "unknown",
 	}
 
 	unknown := "unknown-pic"
 
-	f, err := os.Open(path)
+	var err error
+	o.FH, err = os.Open(o.FullSourcePath)
 	if err != nil {
-		log.Fatalf("Failed to open %s for reading due to error: %v", path, err)
+		log.Fatalf("Failed to open %s for reading due to error: %v", o.FullSourcePath, err)
 	}
-	defer f.Close()
+	defer o.FH.Close()
 
-	x, err := exif.Decode(f)
+	x, err := exif.Decode(o.FH)
 	if err != nil {
 		if debug {
-			log.Printf("Failed to decode exif on file: %s", path)
+			log.Printf("Failed to decode exif on file: %s", o.FullSourcePath)
 		}
 
 		// if we have not set a directory into which to copy files of unknown metadata,
 		// just copy it into the last known good directory
 		if len(unknownDir) > 0 {
-			copyFile(f, p.origFilename, unknownDir+"/"+unknown)
+			copyFileNew(o, o.SourceName, unknownDir+"/"+unknown)
 		} else {
-			copyFile(f, p.origFilename, prevDir+"/"+unknown)
+			copyFileNew(o, o.SourceName, prevDir+"/"+unknown)
 		}
 		return
 	}
@@ -60,7 +60,7 @@ func examinePic(path string) {
 	Make, err := x.Get("Make")
 	if err != nil {
 		if debug {
-			log.Printf("Failed to extract make from metadata for file: %s", path)
+			log.Printf("Failed to extract make from metadata for file: %s", o.FullSourcePath)
 		}
 	} else {
 		p.make = strings.Replace(Make.String(), `"`, "", -1)
@@ -69,10 +69,40 @@ func examinePic(path string) {
 	Model, err := x.Get("Model")
 	if err != nil {
 		if debug {
-			log.Printf("Failed to extract model from metadata for file: %s", path)
+			log.Printf("Failed to extract model from metadata for file: %s", o.FullSourcePath)
 		}
 	} else {
 		p.model = strings.Replace(Model.String(), `"`, "", -1)
+	}
+
+	// if we failed to get Make and Model, then go for the lens
+	if p.make == "unknown" {
+		Make, err := x.Get("LensMake")
+		if err != nil {
+			if debug {
+				log.Printf("Failed to extract LensMake from metadata for file: %s", o.FullSourcePath)
+			}
+		} else {
+			p.make = strings.Replace(Make.String(), `"`, "", -1)
+		}
+	}
+
+	if p.model == "unknown" {
+		Model, err := x.Get("LensModel")
+		if err != nil {
+			if debug {
+				log.Printf("Failed to extract model from metadata for file: %s", o.FullSourcePath)
+			}
+		} else {
+			//LensModel: "iPhone 6 back camera 4.15mm f/2.2"
+			lm := strings.Replace(Model.String(), `"`, "", -1)
+			fields := strings.Fields(lm)
+			if len(fields) > 1 {
+				p.model = fields[0] + " " + fields[1]
+			} else {
+				p.model = "unknown"
+			}
+		}
 	}
 
 	camera := fmt.Sprintf("%s-%s", p.make, p.model)
@@ -80,12 +110,12 @@ func examinePic(path string) {
 	dateTaken, err := x.DateTime()
 	if err != nil {
 		if debug {
-			log.Printf("Failed to extract time/date from metadata on file: %s", path)
+			log.Printf("Failed to extract time/date from metadata on file: %s", o.FullSourcePath)
 		}
 		if len(unknownDir) > 0 {
-			copyFile(f, p.origFilename, unknownDir+"/"+camera)
+			copyFileNew(o, o.SourceName, unknownDir+"/"+camera)
 		} else {
-			copyFile(f, p.origFilename, prevDir+"/"+camera)
+			copyFileNew(o, o.SourceName, prevDir+"/"+camera)
 		}
 		return
 	}
@@ -102,10 +132,10 @@ func examinePic(path string) {
 	// so the next file we come across we can put into this same directory
 	prevDir = destpath
 
-	if noRename {
-		copyFile(f, p.origFilename, destpath+"/"+camera)
+	if noRenameDest {
+		copyFileNew(o, o.SourceName, destpath+"/"+camera)
 	} else {
-		copyFile(f, newFilename, destpath+"/"+camera)
+		copyFileNew(o, newFilename, destpath+"/"+camera)
 	}
 
 }
