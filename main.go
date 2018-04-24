@@ -36,13 +36,12 @@ func main() {
 	flag.StringVar(&startDir, "startDir", "", "Start traversing from here")
 	flag.StringVar(&destDir, "destDir", "", "Put renamed files here")
 	flag.StringVar(&unknownDir, "unknownDir", "", "Where to put files with unknown metadata")
-	flag.StringVar(&pics, "picExts", "jpg,gif,png,aae,tif,thm", "Comma delimited list of picture extensions")
+	flag.StringVar(&pics, "picExts", "jpg,jpeg,gif,png,aae,tif,thm", "Comma delimited list of picture extensions")
 	flag.StringVar(&movs, "movExts", "mov,mp4,avi,mod,m4a,m4v,lrv", "Comma delimited list of movie extensions")
 	flag.StringVar(&mediainfo, "mediainfo", "/usr/bin/mediainfo", "Path to mediainfo binary")
 	flag.BoolVar(&debug, "debug", false, "Set for more logging")
 	flag.BoolVar(&noRenameDest, "noRenameDest", false, "Do not rename files on destination - keep existing source filename")
 	flag.BoolVar(&renameSource, "renameSource", false, "Rename source file after successful copy")
-
 	flag.Parse()
 
 	if len(startDir) == 0 || len(destDir) == 0 {

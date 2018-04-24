@@ -123,7 +123,7 @@ func examinePic(o *object) {
 	//extract the timestamp from the jpg
 	p.year, p.month, p.day, p.hour, p.minute, p.second = exifDecode(dateTaken)
 
-	// remove whitespace in previous files and replace with _
+	// remove whitespace in source filename and replace with _
 	s := strings.Replace(p.origFilename, " ", "_", -1)
 	newFilename := fmt.Sprintf("%s%s%s_%s%s%s_%s", p.year, p.month, p.day, p.hour, p.minute, p.second, s)
 
