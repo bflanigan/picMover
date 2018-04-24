@@ -49,7 +49,7 @@ func copyFileNew(o *object, destFilename string, destPath string) {
 
 	if renameSource {
 		if written == o.SourceSize {
-			err = os.Rename(o.FullSourcePath, o.FullSourcePath+renameSuffix)
+			err = os.Rename(o.FullSourcePath, renamePrefix+o.FullSourcePath)
 			if err != nil {
 				log.Printf("Failed to rename file: %s due to error: %v", o.FullSourcePath, err)
 			}
