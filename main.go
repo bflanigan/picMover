@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	destDir, prevDir, unknownDir, mediainfo, renamePrefix string
+	destDir, prevDir, unknownDir, mediainfo, renameString string
 	movieExts, picExts                                    []string
 	debug, noRenameDest, renameSource                     bool
 	byteCount                                             int64
@@ -55,7 +55,7 @@ func main() {
 
 	// if we want to rename source file after copying, define our suffix
 	if renameSource {
-		renamePrefix = fmt.Sprintf("copied-%d-", time.Now().Unix())
+		renameString = fmt.Sprintf("copied-%d", time.Now().Unix())
 	}
 
 	// set this to our destination dir initially - it will be modified the next time we can successfully extract the time/date from a file

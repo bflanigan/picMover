@@ -1,9 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"log"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
@@ -49,7 +51,11 @@ func copyFileNew(o *object, destFilename string, destPath string) {
 
 	if renameSource {
 		if written == o.SourceSize {
-			err = os.Rename(o.FullSourcePath, renamePrefix+o.FullSourcePath)
+
+			extension := filepath.Ext(o.FullSourcePath)
+			filenameNoExtension := strings.TrimSuffix(o.FullSourcePath, extension)
+			renamedFile := fmt.Sprintf("%s-%s%s", filenameNoExtension, renameString, extension)
+			err = os.Rename(o.FullSourcePath, renamedFile)
 			if err != nil {
 				log.Printf("Failed to rename file: %s due to error: %v", o.FullSourcePath, err)
 			}
