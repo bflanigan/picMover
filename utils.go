@@ -49,6 +49,8 @@ func copyFileNew(o *object, destFilename string, destPath string) {
 		log.Printf("Copied %d bytes %s to %s", written, o.FH.Name(), df.Name())
 	}
 
+	// rename the source file if we have successfully copied
+	// we can then run a find to remove all files with that pattern in it
 	if renameSource {
 		if written == o.SourceSize {
 

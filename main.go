@@ -6,15 +6,17 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"time"
 )
 
 var (
-	destDir, prevDir, unknownDir, mediainfo, renameString string
-	movieExts, picExts                                    []string
-	debug, noRenameDest, renameSource                     bool
-	byteCount                                             int64
+	destDir, prevDir, unknownDir, mediainfo, renameString, excludeString string
+	movieExts, picExts                                                   []string
+	debug, noRenameDest, renameSource                                    bool
+	byteCount                                                            int64
+	excludeRegex                                                         *regexp.Regexp
 )
 
 // object refers to the file we are examining in walkFunc
@@ -38,6 +40,7 @@ func main() {
 	flag.StringVar(&unknownDir, "unknownDir", "", "Where to put files with unknown metadata")
 	flag.StringVar(&pics, "picExts", "jpg,jpeg,gif,png,aae,tif,thm", "Comma delimited list of picture extensions")
 	flag.StringVar(&movs, "movExts", "mov,mp4,avi,mod,m4a,m4v,lrv", "Comma delimited list of movie extensions")
+	flag.StringVar(&excludeString, "exclude", "", "regex for file excludes")
 	flag.StringVar(&mediainfo, "mediainfo", "/usr/bin/mediainfo", "Path to mediainfo binary")
 	flag.BoolVar(&debug, "debug", false, "Set for more logging")
 	flag.BoolVar(&noRenameDest, "noRenameDest", false, "Do not rename files on destination - keep existing source filename")
@@ -46,6 +49,10 @@ func main() {
 
 	if len(startDir) == 0 || len(destDir) == 0 {
 		log.Fatalf("You did not specify either a starting or destination dir")
+	}
+
+	if len(excludeString) > 0 {
+		excludeRegex = regexp.MustCompile(excludeString)
 	}
 
 	_, err := os.Stat(mediainfo)
@@ -82,6 +89,13 @@ func walkFunc(path string, info os.FileInfo, err error) error {
 		return nil
 	}
 
+	if info.Mode() == os.ModeSymlink {
+		if debug {
+			log.Printf("Skipping %s - symlink", path)
+		}
+		return nil
+	}
+
 	if info.IsDir() {
 		if debug {
 			log.Printf("Skipping dir: %s", path)
@@ -95,6 +109,15 @@ func walkFunc(path string, info os.FileInfo, err error) error {
 			log.Printf("Skipping file: %s", path)
 		}
 		return nil
+	}
+
+	if excludeRegex != nil {
+		if excludeRegex.MatchString(path) {
+			if debug {
+				log.Printf("Skipping %s - found excludeString: %s", path, excludeString)
+			}
+			return nil
+		}
 	}
 
 	o := &object{
